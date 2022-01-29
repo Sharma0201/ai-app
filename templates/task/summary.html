@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Summarizer{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="passage">Passage</label>
+    <textarea name="passage" id="passage">{{ request.form['passage'] }}</textarea>
+    <input type="submit" value="Run">
+  </form>
+  {% if issummary==True %}
+      <article class="post">
+         <header>
+            <div>
+              <h1> Summary </h1>
+            </div>
+         </header>
+         <p class="body">{{summary}}</p>
+  {% endif %}
+{% endblock %}
