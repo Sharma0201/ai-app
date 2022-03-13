@@ -1,13 +1,13 @@
 from flask import (Blueprint, flash, g, redirect, render_template, url_for, request)
 
 from app.db import get_db
-from app.ai.summary import summarize
 
 bp = Blueprint('task', __name__)
 
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+    from app.ai.summary import summarize
     if request.method == 'POST':
         passage = request.form['passage']
         error = None
@@ -43,7 +43,7 @@ def show():
         flash(error)
     else:
         # allsummary = db.execute('SELECT * from summary where author_id = ?', (user,)).fetchall()
-        allsummary = db.execute('SELECT * FROM summary s JOIN user u ON s.author_id = u.id WHERE u.id = ?', (user,)) \
+        allsummary = db.execute('SELECT * FROM summary s JOIN user u ON s.author_id = u.id WHERE u.id = ? ORDER BY created DESC', (user,)) \
             .fetchall()
         return render_template('task/showall.html', allsummary=allsummary)
     return redirect(url_for('task.index'))
